@@ -1,14 +1,10 @@
 package net.orangetweaker.zen.representation;
 
-import java.util.Map;
-
 import com.teamacronymcoders.base.registrysystem.ItemRegistry;
 
 import crafttweaker.annotations.ZenRegister;
 import crafttweaker.api.creativetabs.ICreativeTab;
-import crafttweaker.mc1120.brackets.BracketHandlerItem;
 import net.minecraft.item.EnumRarity;
-import net.minecraft.item.Item;
 import net.orangetweaker.OrangeTweaker;
 import net.orangetweaker.vanilla.items.ItemContent;
 import stanhebben.zenscript.annotations.ZenClass;
@@ -41,19 +37,7 @@ public class ItemRepresentation implements IRepresentation {
   @Override
   @ZenMethod
   public void register() {
-    ItemContent itemContent = new ItemContent(this);
-
     OrangeTweaker.instance.getRegistry(ItemRegistry.class, "ITEM")
-                          .register(itemContent);
-
-    // Add this item to BracketHandlerItem's item list, so it can be referenced
-    // by brackets in other scripts code.
-    Map<String, Item> itemNames = BracketHandlerItem.getItemNames();
-    if (null != itemNames.get(this.getUnlocalizedName())) {
-      throw new RuntimeException("Re-register existing ItemRepresentation '" +
-                                 this.getUnlocalizedName() + "'");
-    } else {
-      itemNames.put(this.getUnlocalizedName(), itemContent);
-    }
+                          .register(new ItemContent(this));
   }
 }

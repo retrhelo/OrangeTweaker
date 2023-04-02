@@ -1,14 +1,10 @@
 package net.orangetweaker.zen.representation;
 
-import java.util.Map;
-
 import com.teamacronymcoders.base.registrysystem.ItemRegistry;
 
 import crafttweaker.annotations.ZenRegister;
 import crafttweaker.api.creativetabs.ICreativeTab;
-import crafttweaker.mc1120.brackets.BracketHandlerItem;
 import net.minecraft.item.EnumRarity;
-import net.minecraft.item.Item;
 import net.orangetweaker.OrangeTweaker;
 import net.orangetweaker.vanilla.items.ItemSwordContent;
 import stanhebben.zenscript.annotations.ZenClass;
@@ -23,6 +19,10 @@ public class ItemSwordRepresentation implements IRepresentation {
   @ZenProperty
   public float attackDamage = 0.0f;
   @ZenProperty
+  public float attackSpeed = 1.6f;
+  @ZenProperty
+  public float additionalReach = 0.0f;
+  @ZenProperty
   public int maxDamage = -1;
   @ZenProperty
   public String rarity = EnumRarity.COMMON.toString();
@@ -30,6 +30,14 @@ public class ItemSwordRepresentation implements IRepresentation {
   public ICreativeTab creativeTab = null;
   @ZenProperty
   public boolean isGlowing = false;
+  @ZenProperty
+  public int enchantability = 15;   // By default as material wood.
+  @ZenProperty
+  public boolean twoHand = false;
+  @ZenProperty
+  public boolean canDisableShield = false;  // Break through entity's shield.
+  @ZenProperty
+  public boolean canSetFire = false;  // Burn your enemy on hit.
 
   @Override
   public String getUnlocalizedName() {
@@ -39,19 +47,7 @@ public class ItemSwordRepresentation implements IRepresentation {
   @Override
   @ZenMethod
   public void register() {
-    ItemSwordContent content = new ItemSwordContent(this);
-
     OrangeTweaker.instance.getRegistry(ItemRegistry.class, "ITEM")
-                          .register(content);
-
-    // Add this item to BracketHandlerItem's item list, so it can be referenced
-    // by brackets later in the script.
-    Map<String, Item> itemNames = BracketHandlerItem.getItemNames();
-    if (null != itemNames.get(this.getUnlocalizedName())) {
-      throw new RuntimeException("Re-register existing ItemRepresentation '" +
-                                 this.getUnlocalizedName() + "'");
-    } else {
-      itemNames.put(this.getUnlocalizedName(), content);
-    }
+                          .register(new ItemSwordContent(this));
   }
 }
